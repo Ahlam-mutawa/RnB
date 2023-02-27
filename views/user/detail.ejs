@@ -1,25 +1,37 @@
-
 <h1> Users detail </h1>
 
-      <div>
-       User first Name: <%= user.firstName %>
+<div>
+  User first Name: <%= user.firstName %>
 
-      </div> 
-      <div>
-        User Last Name: <%= user.lastName %>
-      </div>
-      <div>
-        user Name:<%= user.username %>
-      </div>
-      <div>
-        User email Address: <%= user.emailAddress %>
-      </div>
-      <div>
+</div>
+<div>
+  User Last Name: <%= user.lastName %>
+</div>
+<div>
+  user Name:<%= user.username %>
+</div>
+<div>
+  User email Address: <%= user.emailAddress %>
+</div>
+<div>
 
-        User telephone Number :<%= user.telNumber %>
-      </div>
+  User telephone Number :<%= user.telNumber %>
+</div>
+<div>
 
-        
-       
-   
-       
+  User credit amount :<%= user.credit %>
+</div>
+<div>
+  <% for( let key in user.item ) { %>
+    <a href="/item/details?id=<%= user.item[key]._id %>">
+      <%= user.item[key].itemName %>
+    </a>
+    <% } %>
+</div>
+<div>
+  <% for( let key in user.borrowedItem ) { %>
+    <a href="/item/details?id=<%= user.borrowedItem[key]._id %>">
+      <%= user.borrowedItem[key].itemName %>
+    </a>
+    <% } %>
+</div>

@@ -1,0 +1,8 @@
+<h1>borrow item <%= item.itemName %>
+</h1>
+<p>User <%= user.username %>
+</p>
+
+<form action="/item/borrow?id=<%= item._id %>" method="post">
+    <button type="submit">borrow</button>
+</form>

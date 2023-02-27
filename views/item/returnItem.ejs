@@ -1,0 +1,17 @@
+<h1>return item <%= item.itemName %>
+</h1>
+<p>User <%= user.username %>
+</p>
+
+<form action="/item/return?id=<%= item._id %>" method="post">
+    <label for="score">Rate</label>
+    <select name="score" id="rate">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <textarea name="description" id="" cols="30" rows="10"></textarea>
+
+        <button type="submit">return</button>
+</form>

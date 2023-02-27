@@ -1,0 +1,23 @@
+<h1>Reviews</h1>
+
+
+<form>
+
+    <th>Description</th>
+
+    <th>Score</th>
+
+</form>
+
+<%reviews.forEach(function(review) {%>
+
+    <td><a href="/review/update=<%=review._id %>">edit</a></td>
+    <td><%= review.description %></td>
+    <td><%= review.score %></td>
+
+    <% }) %>
+
+
+
+
+})

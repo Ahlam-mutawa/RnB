@@ -1,0 +1,38 @@
+<h1>Add item</h1>
+
+<form method="POST" action="/item/add">
+    <div>
+        <label>Item Name</label>
+        <input name="itemName" type="text" />
+    </div>
+    <div>
+        <label>Item description</label>
+        <textarea name="description"></textarea>
+    </div>
+    <div>
+        <label>Item price</label>
+        <input name="priceRate" type="number" value="0" min="0" />
+    </div>
+    <div>
+        <label>Dopsite amount</label>
+        <input name="dopiste" type="number" value="0" min="0" />
+    </div>
+    <div>
+        <label>Item condition</label>
+        <select name="condition" id="condition">
+            <option value="new">new</option>
+            <option value="good">good</option>
+            <option value="old">old</option>
+        </select>
+    </div>
+    <div>
+        <label>Item Type</label>
+        <select name="type" id="type">
+            <option value="home appliances">home appliances</option>
+            <option value="electronics">electronics</option>
+            <option value="other">other</option>
+        </select>
+    </div>
+    <button type="submit">Add item</button>
+
+</form>

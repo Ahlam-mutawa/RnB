@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/test.css">
     <title>RnB</title>
 </head>
 
@@ -16,14 +17,15 @@
         <a href="/home/another">another</a>
         <a href="/user/list">Users list</a>
         <a href="/user/myProfile">My profile</a>
-        <% if (name) { %>
+        <a href="/item/add">Add item</a>
+
+        <% if (locals.user) { %>
             <a href="/auth/signout">sign out</a>
-            <% } else { %>
-                <a href="/auth/signin">sign in</a>
-                <a href="/auth/signup">sign up</a>
-                <% } %>
-
-
+            <p>Hi <%= locals.user.username %>
+                    <% } else { %>
+                        <a href="/auth/signin">sign in</a>
+                        <a href="/auth/signup">sign up</a>
+                        <% } %>
     </nav>
 
     <% if (locals.messages) { %>

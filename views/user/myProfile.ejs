@@ -1,21 +1,22 @@
 <h1> Users detail </h1>
 
-      <div>
-       User first Name: <%= user.firstName %>
+<div>
+  User first Name: <%= user.firstName %>
 
-      </div> 
-      <div>
-        User Last Name: <%= user.lastName %>
-      </div>
-      <div>
-        user Name:<%= user.username %>
-      </div>
-      <div>
-        User email Address: <%= user.emailAddress %>
-      </div>
-      <div>
+</div>
+<div>
+  User Last Name: <%= user.lastName %>
+</div>
+<div>
+  user Name:<%= user.username %>
+</div>
+<div>
+  User email Address: <%= user.emailAddress %>
+</div>
+<div>
 
-        User telephone Number :<%= user.telNumber %>
-      </div>
+  User telephone Number :<%= user.telNumber %>
+</div>
 
-      <td><a href="/user/edit?id=<%=user._id%>">Edit</a></td>
+<td><a href="/user/edit?id=<%=user._id%>">Edit</a></td>
+<a href="/item/add?id=<%=user._id%>">List a new Item</a>

@@ -1,0 +1,51 @@
+<h2>
+    <%= item.title %>
+</h2>
+
+<div>
+    Name: <%= item.itemName %>
+</div>
+
+<div>
+    Description: <%= item.description %>
+</div>
+
+<div>
+    Price rate per day: <%= item.priceRate %>
+</div>
+
+<div>
+    condition: <%= item.condition %>
+</div>
+
+
+<div>
+    owner: <%= item.owner.username %>
+</div>
+<% if (!item.isAvailable) { %>
+
+    <div>
+        borrower: <%= item.borrower.username %>
+    </div>
+    <% } %>
+
+        <div>
+            review: <%= item.review %>
+        </div>
+
+
+        <div>
+            content: <%= item.score %>
+        </div>
+        <div>
+            <% if (item.isAvailable) { %>
+                <a href="/item/borrow?id=<%= item._id %>">borrow</a>
+                <% } else { %>
+                    <a href="/item/return?id=<%= item._id %>">return</a>
+                    <%= item.borrowDate %>
+                        <% } %>
+        </div>
+
+        <div>
+            review: <%= item.review %>
+        </div>

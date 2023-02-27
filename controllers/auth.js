@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User')
 const passport = require('../lib/passportConfig')
 function auth_signup_get(req, res) {
-    res.render('auth/signup', { name: req.user })
+    res.render('auth/signup')
 }
 
 async function auth_signup_post(req, res) {
@@ -25,7 +25,7 @@ async function auth_signup_post(req, res) {
 }
 
 function auth_signin_get(req, res) {
-    res.render('auth/signin', { name: req.user })
+    res.render('auth/signin')
 }
 const auth_signin_post = passport.authenticate('local', {
     // successReturnToOrRedirect: '/',

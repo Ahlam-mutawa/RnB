@@ -1,8 +1,9 @@
 <h1>Home Page</h1>
-<form action="" method="post">
-    <input type="file" name="image" id="">
+<form action="/upload/profile" method="post" enctype="multipart/form-data">
+    <input type="file" name="profileImage" id="">
     <button type="submit">submit</button>
 </form>
-<% if (name) { %>
-    <%= name.username %>
-        <% } %>
+<form action="/upload/item" method="post" enctype="multipart/form-data">
+    <input type="file" name="itemImage" id="">
+    <button type="submit">submit item</button>
+</form>
