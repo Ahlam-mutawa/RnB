@@ -1,51 +1,142 @@
-<h2>
-    <%= item.title %>
-</h2>
+<section>
+  <div class="container py-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 ">
+      <div class="col-lg-5">
+        <div class="card mb-5">
+          <div class="card shadow-sm">
+            <img src="/images/items/<%= item.itemImage %>" alt="item picture" class="img-fluid" width="100%"
+              height="600" role="img" aria-label="<%= item.itemName %>" preserveAspectRatio="xMidYMid slice"
+              focusable="false">
+          </div>
 
-<div>
-    Name: <%= item.itemName %>
-</div>
-
-<div>
-    Description: <%= item.description %>
-</div>
-
-<div>
-    Price rate per day: <%= item.priceRate %>
-</div>
-
-<div>
-    condition: <%= item.condition %>
-</div>
-
-
-<div>
-    owner: <%= item.owner.username %>
-</div>
-<% if (!item.isAvailable) { %>
-
-    <div>
-        borrower: <%= item.borrower.username %>
-    </div>
-    <% } %>
-
-        <div>
-            review: <%= item.review %>
         </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card mb-4">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Item Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  <%= item.itemName %>
+                </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Item Description</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  <%= item.description %>
+                </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Item Conditon</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  <%= item.condition %>
+                </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Price per day</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  BD<%= item.priceRate %>
+                </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Deposite Amount</p>
+              </div>
 
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  BD<%= item.deposit %>
+                </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Item Owner</p>
+              </div>
 
-        <div>
-            content: <%= item.score %>
-        </div>
-        <div>
-            <% if (item.isAvailable) { %>
-                <a href="/item/borrow?id=<%= item._id %>">borrow</a>
-                <% } else { %>
-                    <a href="/item/return?id=<%= item._id %>">return</a>
-                    <%= item.borrowDate %>
+              <div class="col-sm-3">
+                <p class="text-muted mb-0"><a href="/user/detail?id=<%= item.owner._id %>">
+                    <%= item.owner.username %>
+                  </a></p>
+
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Reviews</p>
+              </div>
+
+              <div class="col-sm-9">
+                <% if (item.numOfReview) { %>
+                  <% let point=0%>
+                    <% for (const key in item.review) { %>
+                      <%point+= item.review[key].score %>
                         <% } %>
-        </div>
+                          <%= `rating: ${Math.round((point/ item.review.length)*(100/5)*10)/10}%, number of reviews:
+                            ${item.review.length}` %>
+                            <% } else { %>
+                              no review yet
+                              <% } %>
+              </div>
+              <hr>
+              <!-- this is to show borrow details if user is owner -->
 
-        <div>
-            review: <%= item.review %>
-        </div>
+              <% if (locals.user525&&item.owner.id.toString()===locals.user525._id.toString()) { %>
+                <% if (!item.isAvailable) { %>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Borrower:</p>
+                    </div>
+                    <div class="col-sm-3 ">
+                      <p class="col-sm-9 "><a href="/user/detail?id=<%= item.borrower.id %>">
+                          <%= item.borrower.username %>
+                        </a></p>
+
+                    </div>
+
+
+                    borrowed date: <%= item.borrowDate.toLocaleDateString('en-US', { year: 'numeric' , month: 'long' })
+                      %>
+                      <% } %>
+                        <% } else if
+                          ((!item.isAvailable)&&(locals.user525)&&item.borrower.id.toString()===locals.user525._id.toString())
+                          { %>
+                          <a class="btn btn-outline-primary ms-1" href="/item/return?id=<%= item._id %>">return</a>
+
+                          <% } else { %>
+                            <!-- this is to show borrow if it is available and user not owner -->
+
+                            <% if (item.isAvailable) { %>
+                              <a class="btn btn-outline-primary ms-9" href="/item/borrow?id=<%= item._id %>">Rent
+                                it</a>
+                              <!-- this is to show return if it is under user -->
+                              <% } else { %>
+                                not available for rent
+                                <% } %>
+                                  <% } %>
+                  </div>
+
+
+            </div>

@@ -5,47 +5,84 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/main.css">
-    <link rel="stylesheet" href="/styles/test.css">
-    <title>RnB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+    <title>Rent and Buy</title>
 </head>
 
 <body>
-    Layout
-    <nav>
-        <a href="/">home</a>
-        <a href="/home/another">another</a>
-        <a href="/user/list">Users list</a>
-        <a href="/user/myProfile">My profile</a>
-        <a href="/item/add">Add item</a>
+    <style>
+        section {
+            padding: 60px 0;
+        }
+    </style>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-md navbar-light">
+        <div class="container-xxl">
+            <a href="/" class="navbar-brand">
+                <a class="navbar-brand" href="/">
+                    <img src="/images/logo.png" class="float-left" width="10%" alt="logo">
+                    The Power of Sharing
+                </a>
+            </a>
 
-        <% if (locals.user) { %>
-            <a href="/auth/signout">sign out</a>
-            <p>Hi <%= locals.user.username %>
-                    <% } else { %>
-                        <a href="/auth/signin">sign in</a>
-                        <a href="/auth/signup">sign up</a>
-                        <% } %>
-    </nav>
-
-    <% if (locals.messages) { %>
-        <ul class="messages">
-            <% Object.keys(messages).forEach((key)=> { %> <% messages[key].forEach((message)=> { %>
-                    <li class="<%= key %>">
-                        <%= message %>
+            <!-- toggle button for mobile nav -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"
+                aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
                     </li>
-                    <% }) %>
-                        <% }) %>
-        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/item/index">Browse</a>
+                    </li>
+
+                    <% if (locals.user525) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/myProfile">My profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="#">Welcome Back, <%= locals.user525.username %>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary signin" href="/auth/signout">sign out</a>
+                        </li>
+
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="btn btn-primary signin" href="/auth/signin">sign in</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary" href="/auth/signup">sign up</a>
+                            </li>
+                            <% } %>
+                </ul>
+
+            </div>
+
+
+
+        </div>
+    </nav>
+    <% if (locals.flashMessage) { %>
+        <div class="flash-message">
+            <%= locals.flashMessage %>
+        </div>
         <% } %>
-            <hr>
-            <% if (messages.error) { %>
-                <p>
-                    <%= messages.error %>
-                </p>
-                <% } %>
-                    <br>
-                    <%- body %>
+            <br>
+            <%- body %>
+
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+                    crossorigin="anonymous"></script>
+
 </body>
 
 </html>

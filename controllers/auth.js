@@ -5,22 +5,21 @@ function auth_signup_get(req, res) {
     res.render('auth/signup')
 }
 
-async function auth_signup_post(req, res) {
+async function auth_signup_post(req, res, next) {
     User.isValid(req.body)
         .then((result) => {
             const user = new User(result)
             user.save()
                 .then(() => res.redirect('/auth/signin'))
                 .catch((e) => {
-                    req.flash('error', e.message)
-                    console.error(e)
-                    res.send(e.message)
+                    req.session.flashMessage = e.message
+                    res.redirect('/auth/signup')
                 })
         })
         .catch(e => {
-            req.flash('error', e.message)
-            console.error(e)
-            res.send(e.message)
+            req.session.flashMessage = e.message
+            res.redirect('/auth/signup')
+
         })
 }
 
@@ -28,16 +27,16 @@ function auth_signin_get(req, res) {
     res.render('auth/signin')
 }
 const auth_signin_post = passport.authenticate('local', {
-    // successReturnToOrRedirect: '/',
     successRedirect: '/',
     failureRedirect: '/auth/signin',
-    // failureFlash: true
 })
 
 function auth_signout_get(req, res) {
     req.logout(function (err) {
-        if (err)
+        if (err) {
+            req.session.flashMessage = err.message
             return next(err)
+        }
         res.redirect('/')
     })
 }

@@ -1,40 +1,88 @@
-<h1> item list </h1>
-
-<table class="table table-striped">
-    <tr>
-        <th>Item Name</th>
-        <th>Item description</th>
-        <th>Item price</th>
-        <th>Item condition</th>
-        <th>review</th>
-        <th>score</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-
-    <% items.forEach(function(item){ %>
-        <tr>
-            <td>
-                <%= item.itemName %>
-            </td>
-            <td>
-                <%= item.description %>
-            </td>
-            <td>
-                <%= item.priceRate %>
-            </td>
-            <td>
-                <%= item.condition %>
-            </td>
-            <td>
-                <%= item.review %>
-            </td>
-
-            <td>
-                <%= item.score %>
-            </td>
+<style>
+    .dropdown {
+        border-radius: 4px;
+    }
+</style>
 
 
-        </tr>
-        <% }) %>
-</table>
+<!-- html -->
+<section class="py-3 text-center container">
+    <div class="row py-lg-2">
+        <div class="col-lg-10 col-md-10 mx-auto">
+            <h1 class="fw-light">Share and Earn</h1>
+            <h2 class="fw-light text-muted">Discover the Power of Sharing</h2>
+            <p class="lead text-muted">We provide a convenient platform for people to share their unused or
+                underutilized items and stuff with others in need. Whether you're looking to rent or borrow, our website
+                offers a user-friendly experience that allows you to find and transact with others quickly and easily.
+                Join our community today and discover the benefits of sharing!</p>
+
+            <form action="/item/index" method="get" class="dropdown d-flex align-items-baseline addItem">
+                <label for="sort">Sort by </label>
+                <select name="sort" id="">
+                    <option value="empty"></option>
+                    <option value="priceUp">Price: low to high</option>
+                    <option value="priceDown">Price: high to low</option>
+                    <option value="newest">newest</option>
+                    <option value="oldest">oldest</option>
+                </select>
+                <label for="category">Category </label>
+                <select name="category" id="">
+                    <option value="all">All</option>
+                    <option value="home_appliances">Home Appliances</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="other">Other</option>
+                </select>
+                <label for="condition">Condition </label>
+                <select name="condition" id="">
+                    <option value="all">all</option>
+                    <option value="new">New</option>
+                    <option value="good">Good</option>
+                    <option value="old">Old</option>
+                </select>
+                <label for="availability">Availability </label>
+                <select name="availability" id="">
+                    <option value="all">all</option>
+                    <option value="available">available</option>
+                    <option value="notAvailable">Not Available</option>
+                </select>
+                <input type="submit" value="filter" class="btn btn-secondary my-2">
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<div class="album py-5 bg-light">
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <% items.forEach(function(item){ %>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img src="/images/items/<%= item.itemImage %>" alt="item picture"
+                            class="bd-placeholder-img card-img-top cover-img" width="100%" height="225" role="img"
+                            aria-label="<%= item.itemName %>" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <div class="card-body">
+                            <h3 class="cap">
+                                <%= item.itemName %>
+                            </h3>
+                            <p class="card-text">
+                                <%= item.description %>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="/item/details?id=<%= item._id %>"><button type="button"
+                                            class="btn btn-sm btn-primary">Rent Now</button></a>
+                                </div>
+                                <small class="text-muted">BD<%= item.priceRate %></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+</div>

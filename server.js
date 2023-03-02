@@ -26,9 +26,20 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use((req, res, next) => {
-    res.locals = { user: req.user }
+    res.locals = { user525: req.user }
     next()
 })
+
+
+// Set up flash messages middleware
+app.use((req, res, next) => {
+    if (req.session.flashMessage) {
+        res.locals.flashMessage = req.session.flashMessage;
+        delete req.session.flashMessage;
+    }
+    next();
+});
+
 
 //static folder
 app.use(express.static('public'))
@@ -48,13 +59,16 @@ const reviewRouter = require('./routers/review')
 const userRouter = require('./routers/user')
 const itemRouter = require('./routers/item')
 const paymentRouter = require('./routers/payment')
-
+app.get('/', (req, res) => {
+    req.session.flashMessage = 'Welcome to my website!';
+    res.render('home/index');
+});
 //Mount Routes
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
 app.use('/review', reviewRouter)
 app.use('/user', userRouter)
-app.use('/item', itemRouter)
+app.use('/item/', itemRouter)
 app.use('/payment', paymentRouter)
 
 

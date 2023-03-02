@@ -3,92 +3,156 @@ const Item = require("../models/Item")
 const User = require("../models/User")
 const Review = require("../models/Review")
 
-// HTTP GET - Load item Form
-exports.item_create_get = (req, res, next) => {
-    var user = req.user;
-    User.findById(user)
-    res.render("item/add")
-}
-
-// HTTP POST - to post the data 
-exports.item_create_post = (req, res) => {
-
-    console.log(req.body);
-    const item = new Item(req.body);
-    item.owner = req.user._id
-    //Save Item in database 
-    item.save()
-        .then(() => {
-            res.redirect("/item/index");
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send("Please try again later!!!");
-        })
-}
 
 //HTTP GET - index:
-exports.item_index_get = (req, res) => {
-    Item.find()
+function item_index_get(req, res) {
+    let data = req.query.sort == "priceUp" ? { priceRate: 1 } : req.query.sort == "priceDown" ? { priceRate: -1 } : req.query.sort == "newest" ? { createdAt: -1 } : req.query.sort == "oldest" ? { createdAt: 1 } : {}
+    const filter = {}
+    if (req.query.category === 'home_appliances')
+        filter.type = 'home appliances'
+    if (req.query.category === 'electronics')
+        filter.type = 'electronics'
+    if (req.query.category === 'other')
+        filter.type = 'other'
+
+    if (req.query.condition === 'new')
+        filter.condition = 'new'
+    if (req.query.condition === 'good')
+        filter.condition = 'good'
+    if (req.query.condition === 'old')
+        filter.condition = 'old'
+
+    if (req.query.availability === 'available')
+        filter.isAvailable = true
+    if (req.query.availability === 'notAvailable')
+        filter.isAvailable = false
+
+    Item.find(filter).sort(data).populate('owner').populate('borrower').populate('review').populate('numOfReview')
         .then(items => {
             res.render("item/index", { items })
         })
         .catch(err => {
-            console.log(err);
+            req.session.flashMessage = err.message
+            res.redirect('/item/index')
         })
 }
 
-exports.item_details_get = (req, res) => {
-    Item.findById(req.query.id).populate('owner').populate('borrower').populate('review')
+//HTTP GET - detail:
+function item_details_get(req, res) {
+    Item.findById(req.query.id).populate('owner').populate('borrower').populate('review').populate('numOfReview')
         .then(item => {
-            console.log('review', item.reviews)
-            console.log('num', item.numOfReview)
-            console.log('score', item.score)
+            console.log(item)
             res.render("item/details", { item })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            req.session.flashMessage = err.message
+            res.redirect('/item/index')
+        })
 }
-exports.item_borrow_get = (req, res) => {
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
+//ADD
+// HTTP GET - ADD
+function item_create_get(req, res) {
+    res.render("item/add")
+}
+// HTTP POST - ADD
+function item_create_post(req, res) {
+    const item = new Item(req.body);
+    item.owner = req.user._id
+    item.itemImage = req.file.filename
+    item.save()
+        .then(() => {
+            res.redirect("/user/myprofile")
+        })
+        .catch((err) => {
+            req.session.flashMessage = err.message
+            res.redirect('/item/index')
+        })
+}
+
+// HTTP GET - ADD Image
+function item_addImg_get(req, res) {
+    res.render("item/addImg")
+}
+// HTTP POST - ADD Image
+function item_addImg_post(req, res) {
+    Item.findById(req.query.id).populate('owner')
+        .then(item => {
+            if (item.owner.id == req.user._id) {
+                item.itemImage = req.file.filename
+                item.save()
+                    .then(res.redirect('/user/myProfile'))
+                    .catch(e => {
+                        req.session.flashMessage = err.message
+                        res.redirect('/item/index')
+                    })
+            } else {
+                req.session.flashMessage = 'Sign in Please!'
+                res.redirect('/auth/signin')
+            }
+        })
+        .catch(e => res.send(e.message))
+}
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
+// BORROW
+// HTTP GET - Borrow
+function item_borrow_get(req, res) {
     Item.findById(req.query.id).populate('owner').populate('borrower')
         .then(item => {
             if (item.isAvailable)
-                res.render("item/borrowItem", { item, user: req.user })
+                res.render("item/borrowItem", { item })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            req.session.flashMessage = err.message
+            res.redirect('/item/index')
+        })
 }
-exports.item_borrow_post = (req, res) => {
+// HTTP POST - Borrow
+function item_borrow_post(req, res) {
     Item.findById(req.query.id)
         .then(item => {
             if (item.isAvailable) {
                 User.findById(req.user._id)
                     .then(user => {
-                        user.credit -= item.dopiste
+                        user.credit -= item.deposit
                         user.save()
                     })
                 item.isAvailable = false
                 item.borrower = req.user._id
                 item.borrowDate = Date.now()
                 item.save()
-                res.render("item/borrowItem", { item, user: req.user })
+                res.render("user/myprofile", { item, user: req.user })
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            req.session.flashMessage = err.message
+            res.redirect('/item/index')
+        })
 }
-exports.item_return_get = (req, res) => {
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
+// RETURN
+// HTTP GET - Return
+function item_return_get(req, res) {
     Item.findById(req.query.id).populate('owner').populate('borrower')
         .then(item => {
             if (!item.isAvailable)
-                res.render("item/returnItem", { item, user: req.user })
+                res.render("item/returnItem", { item })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            req.session.flashMessage = 'Something went wrong'
+            console.log(err);
+            res.redirect('/item/index')
+        })
 }
-exports.item_return_post = (req, res) => {
+// HTTP POST - Return
+function item_return_post(req, res) {
     Item.findById(req.query.id)
         .then(item => {
             if (!item.isAvailable) {
-                const balance = item.dopiste - (
-                    item.priceRate * Math.ceil((Date.now() - item.borrowDate) / (1000 * 60 * 60 * 24)))
-                User.findById(item.borrower)
+                const balance = item.deposit - (
+                    item.priceRate * Math.ceil(parseFloat(Date.now() - item.borrowDate) / (1000 * 60 * 60 * 24)))
+                console.log(item.borrower.id)
+                User.findById(item.borrower._id)
                     .then(user => {
                         user.credit += balance
                         user.save()
@@ -104,29 +168,91 @@ exports.item_return_post = (req, res) => {
                 data.item = item._id
                 const review = new Review(data)
                 review.save()
-                    .then(res.redirect("/"))
-                    .catch(err => console.log(err))
+                    .then(res.redirect("/user/myprofile"))
+                    .catch(err => {
+                        req.session.flashMessage = 'Something went wrong'
+                        console.log(err);
+                        res.redirect('/item/index')
+                    })
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            req.session.flashMessage = 'Something went wrong'
+            console.log(err);
+            res.redirect('/item/index')
+        })
+}
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
+// EDIT
+// HTTP GET - Edit
+function item_edit_get(req, res) {
+    Item.findById(req.query.id).populate('owner').populate('borrower')
+        .then(item => {
+            if (item.isAvailable)
+                res.render("item/edit", { item })
+        })
+        .catch(err => {
+            req.session.flashMessage = 'Something went wrong'
+            console.log(err);
+            res.redirect('/item/index')
+        })
+}
+// HTTP POST - Edit
+function item_edit_post(req, res) {
+    const data = { itemName, description, priceRate, deposit, condition, type } = req.body
+    Item.findByIdAndUpdate(req.query.id, data)
+        .then((b) => {
+            res.redirect("/user/myProfile");
+        })
+        .catch((err) => {
+            req.session.flashMessage = 'Something went wrong'
+            console.log(err);
+            res.redirect('/item/index')
+        })
+}
+///-
+function item_edit2_get(req, res) {
+    // Item.findOneAndUpdate(filter, update, { new: true })
+    Item.findById(req.query.id).populate('owner').populate('borrower')
+        .then(item => {
+            if (item.isAvailable)
+                res.render("item/edit2", { item })
+        })
+        .catch(err => {
+            req.session.flashMessage = 'Something went wrong'
+            console.log(err);
+            res.redirect('/item/index')
+        })
+}
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
+// DELETE
+// HTTP GET - Delete
+function item_delete_get(req, res) {
+    Item.findOneAndDelete({ _id: req.query.id, isAvailable: true, owner: req.user._id }, function (err, docs) {
+        if (err) {
+            req.session.flashMessage = 'Something went wrong'
+            console.log(err);
+            res.redirect('/item/index')
+        }
+        else {
+            res.redirect('/user/myprofile')
+        }
+    })
 }
 
-/*
-const Character = mongoose.model('Character', new mongoose.Schema({
-  name: String,
-  age: Number
-}));
-
-await Character.create({ name: 'Jean-Luc Picard' });
-
-const filter = { name: 'Jean-Luc Picard' };
-const update = { age: 59 };
-
-// `doc` is the document _before_ `update` was applied
-let doc = await Character.findOneAndUpdate(filter, update);
-doc.name; // 'Jean-Luc Picard'
-doc.age; // undefined
-
-doc = await Character.findOne(filter);
-doc.age; // 59
-*/
+module.exports = {
+    item_index_get,
+    item_details_get,
+    item_create_get,
+    item_create_post,
+    item_addImg_get,
+    item_addImg_post,
+    item_borrow_get,
+    item_borrow_post,
+    item_return_get,
+    item_return_post,
+    item_edit_get,
+    item_edit_post,
+    item_delete_get,
+    item_edit2_get
+}

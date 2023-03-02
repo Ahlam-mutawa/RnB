@@ -13,9 +13,4 @@ router.use(express.urlencoded({ extended: true }));
 //calling APIs
 
 router.get('/', indexCtrl.index_get)
-router.post('/upload/profile', upload.single('profileImage'), indexCtrl.index_post)
-router.post('/upload/item', upload.single('itemImage'), indexCtrl.index_post)
-router.get('/home/another', connect.ensureLoggedIn('/auth/signin'), indexCtrl.another_get)
-
-
 module.exports = router

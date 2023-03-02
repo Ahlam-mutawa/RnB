@@ -1,37 +1,119 @@
-<h1> Users detail </h1>
+<!-- ----------------------------------------------------- New Layout -------------------------------------------------------- -->
 
-<div>
-  User first Name: <%= user.firstName %>
+<div class="container py-5">
+
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <img src="/images/profile/<%= user.profileImage %>" alt="profile picture" width="200" height="200"
+            alt="profile image" class="rounded-circle img-fluid" style="width: 150px;">
+          <h4 class="my-3">
+            <%= user.username %>
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 align-items-center">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">User Name</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">
+                <%= user.username %>
+              </p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Email</p>
+            </div>
+            <div class="col-sm-9">
+              <a href="mailto:<%= user.emailAddress %>">
+                <%= user.emailAddress %>
+              </a>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Rating:</p>
+              </div>
+              <% let point=0%>
+                <% let total=0%>
+                  <% for (const key in user.item) { %>
+                    <% for (const index in user.item[key].review) { %>
+                      <%point+= user.item[key].review[index].score %>
+                        <%total++ %>
+                          <% } %>
+                            <% } %>
+                              <% if (total) { %>
+                                <div class="col-sm-9">
+                                  <p class="text-muted mb-0">
+                                    <%=`${Math.round(( point/total)*10)*(10/5)}%, number of reviews: ${total}` %>
+                                      <% } else { %>
+                                        no reviews yet
+                                        <% } %>
+                                  </p>
+                                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
 
 </div>
-<div>
-  User Last Name: <%= user.lastName %>
-</div>
-<div>
-  user Name:<%= user.username %>
-</div>
-<div>
-  User email Address: <%= user.emailAddress %>
-</div>
-<div>
+<div class="py-6 bg-light">
 
-  User telephone Number :<%= user.telNumber %>
-</div>
-<div>
+  <div class="album py-6 background-color-black bgd">
+    <div class="container itemC">
+      <div class="py-5">
+        <h2>
+          <%= user.username %>'s' Items
+        </h2>
+      </div>
+      <div class="row row-cols-4 row-cols-sm-4 row-cols-md-4 g-4 justify-content-center bgd">
+        <% if (Object.keys(user.item).length) { %>
+          <% for( let key in user.item ) { %>
+            <div class="col">
+              <div class="card shadow-sm">
+                <img src="/images/items/<%= user.item[key].itemImage %>" alt="item picture"
+                  class="bd-placeholder-img card-img-top cover-img" width="100%" height="225" role="img"
+                  aria-label="<%= user.item[key].itemName %>" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <div class="card-body">
+                  <h3 class="cap">
+                    <%= user.item[key].itemName %>
+                  </h3>
+                  <p class="card-text">
+                    <%= user.item[key].description %>
+                  </p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <a href="/item/details?id=<%= user.item[key]._id %>"><button type="button"
+                          class="btn btn-sm btn-primary">View Details</button></a>
+                    </div>
+                    <small class="text-muted">BD<%= user.item[key].priceRate %></small>
+                  </div>
+                </div>
 
-  User credit amount :<%= user.credit %>
-</div>
-<div>
-  <% for( let key in user.item ) { %>
-    <a href="/item/details?id=<%= user.item[key]._id %>">
-      <%= user.item[key].itemName %>
-    </a>
-    <% } %>
-</div>
-<div>
-  <% for( let key in user.borrowedItem ) { %>
-    <a href="/item/details?id=<%= user.borrowedItem[key]._id %>">
-      <%= user.borrowedItem[key].itemName %>
-    </a>
-    <% } %>
+
+
+              </div>
+            </div>
+      </div>
+      <% } %>
+        <% } else { %>
+          <p>no item listed yet</p>
+          <% } %>
+    </div>
+  </div>
 </div>

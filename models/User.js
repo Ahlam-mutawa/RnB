@@ -5,11 +5,14 @@ const userSchema = mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   username: { type: String, required: true, unique: true, lowercase: true },
+  profileImage: { type: String, default: "default.jpg" },
   emailAddress: { type: String, required: true, unique: true, lowercase: true },
   telNumber: { type: String, required: true },
   password: { type: String, required: true },
   credit: { type: Number, default: 0 },
+
 }, { timestamps: true })
+
 
 // verfiy email and password match
 userSchema.statics.verify = async function (emailAddress, password) {
@@ -39,11 +42,31 @@ userSchema.statics.isValid = async function ({ firstName, lastName, username, em
   if (await this.findOne({ emailAddress: emailAddressL }))
     throw Error('Email already registered')
   if (!validator.isStrongPassword(password))
-    throw Error('Password is weak. Password must be 8 character long and contain a lowercase, an uppercase, a number and a symbol')
+    throw Error('Password is weak.')
   const hash = bcrypt.hashSync(password, 10)
   return { firstName, lastName, username: usernameL, emailAddress: emailAddressL, telNumber, password: hash }
 }
 
+// change password
+userSchema.statics.changePassword = async function ({ id, password, newPassword1, newPassword2 }) {
+  if (!password || !newPassword1 || !newPassword2)
+    throw Error('All fields must be filled')
+  if (newPassword1 !== newPassword2)
+    throw Error('New password mismatch')
+  if (!validator.isStrongPassword(newPassword1))
+    throw Error('Password is weak.')
+  const user = await this.findById(id)
+  if (!user)
+    throw Error('Sign in!')
+  const match = bcrypt.compareSync(password, user.password)
+  if (!match)
+    throw Error('Incorrect password')
+  const hash = bcrypt.hashSync(newPassword1, 10)
+  user.password = hash
+  await user.save()
+    .then(console.log('changed'))
+    .catch(() => { throw Error('Try again') })
+}
 userSchema.virtual('item', {
   ref: 'Item',
   localField: '_id',
@@ -55,66 +78,7 @@ userSchema.virtual('borrowedItem', {
   foreignField: 'borrower'
 })
 
+
 userSchema.set('toObject', { virtuals: true })
 
-// item: [{ type: mongoose.Schema.Types.ObjectId, refPath: 'Item' }],
-// review: [{ type: mongoose.Schema.Types.ObjectId, refPath: 'Review' }],
-
-// userSchema.virtual('score').get(async () => {
-//     const total = await this.populate({ path: 'item', select: 'score' })
-/*
-
-authors = await Author.
-find({}).
-// Works, foreign field `author` is selected
-populate({ path: 'posts', select: 'title author' }).
-exec();
-
-AuthorSchema.virtual('posts', {
-ref: 'BlogPost',
-localField: '_id',
-foreignField: 'author',
-match: { archived: false } // match option with basic query selector
-});
-
-*/
-
-/*
-User.find({})
-  .populate({
-    path: 'items',
-    populate: {
-      path: 'comments',
-      model: 'Comment'
-    }
-  })
-  .exec((err, users) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log(users);
-    }
-  });
-*/
-
-// })
-// userSchema.virtual('item', {
-//     ref: 'Item',
-//     localField: '_id',
-//     foreignField: 'user'
-// })
-// userSchema.virtual('review', {
-//     ref: 'Review',
-//     localField: '_id',
-//     foreignField: 'user'
-// })
-
-// userSchema.virtual('score').get(() => {
-//     return this.populate({
-//         {path: 'item',select: 'review'},
-//         populate: { path: 'review' }
-//     })
-// })
-
-// exporting User Model
 module.exports = mongoose.model('User', userSchema)

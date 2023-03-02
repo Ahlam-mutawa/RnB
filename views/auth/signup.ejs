@@ -1,38 +1,77 @@
-<h1>Create a new account</h1>
-
-<form method="POST" action="/auth/signup" class="form-sign">
-    <!-- <div class="form-group"> -->
-    <label>First Name</label>
-    <input name="firstName" type="text" required />
-    <!-- </div> -->
-
-    <!-- <div class="form-group"> -->
-    <label>Last Name</label>
-    <input name="lastName" type="text" required />
-    <!-- </div> -->
-
-    <!-- <div class="form-group"> -->
-    <label>Username</label>
-    <input name="username" type="text" required />
-    <!-- </div> -->
-
-    <!-- <div class="form-group"> -->
-    <label>Email Address</label>
-    <input name="emailAddress" type="email" required />
-    <!-- </div> -->
-
-    <!-- <div class="form-group"> -->
-    <label>Telephone Number</label>
-    <input name="telNumber" type="text" required />
-    <!-- </div> -->
-
-    <!-- <div class="form-group"> -->
-    <label>Password</label>
-    <input name="password" type="password" required />
-    <!-- </div> -->
-
-    <!-- <br> -->
-    <!-- <div> -->
-    <button type="submit">Sign Up</button>
-    <!-- </div> -->
-</form>
+<section class="vh-100">
+  <div class="container-lg">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Register Now</p>
+                <form method="POST" action="/auth/signup" class="mx-1 mx-md-4">
+                  <!-- User first Name input field -->
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example1c">First Name</label>
+                      <input name="firstName" type="text" required id="form3Example1c" class="form-control" />
+                    </div>
+                  </div>
+                  <!-- User last Name field -->
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example1c">Last Name</label>
+                      <input name="lastName" type="text" required id="form3Example1c" class="form-control" />
+                    </div>
+                  </div>
+                  <!-- User email field -->
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example3c">Email Address</label>
+                      <input name="emailAddress" type="email" required id="form3Example3c" class="form-control" />
+                    </div>
+                  </div>
+                  <!-- UserName field -->
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example1c">User Name</label>
+                      <input name="username" type="text" required id="form3Example1c" class="form-control" />
+                    </div>
+                  </div>
+                  <!-- telepghone field -->
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example1c">Mobile Number</label>
+                      <input name="telNumber" type="text" required id="form3Example1c" class="form-control" />
+                    </div>
+                  </div>
+                  <!-- Password -->
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example4c">Password</label>
+                      <input name="password" type="password" required id="form3Example4c" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between mx-4 mb-3 mb-lg-4 reg">
+                    <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                    <a href="/auth/signin" class="h4 align-text-bottom link-primary text-muted">Sign
+                      in</a>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                <img src="/images/style/registerform4.jpg" class="img-fluid" alt="Sample image">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</section>

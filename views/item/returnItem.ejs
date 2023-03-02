@@ -1,17 +1,38 @@
-<h1>return item <%= item.itemName %>
+<h1>Return & review items <%= item.itemName %>
 </h1>
-<p>User <%= user.username %>
-</p>
+<p>User <%= locals.user525.username %>
+    <div class="container py-5">
 
-<form action="/item/return?id=<%= item._id %>" method="post">
-    <label for="score">Rate</label>
-    <select name="score" id="rate">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <textarea name="description" id="" cols="30" rows="10"></textarea>
+      <form method="POST" action="/item/return?id=<%= item._id %>">
+        <div class="form-group">
+          <label>item Score</label>
+          <select class="form-control" name="score" id="rate" required>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
 
-        <button type="submit">return</button>
-</form>
+        <div class="form-group">
+          <label>Item Reveiw</label>
+          <textarea class="form-control" name="description" rows="3" required></textarea>
+        </div>
+        <div class="col-3">
+          <button type="submit" class="btn btn-outline-primary ms-1">Submit review</button>
+        </div>
+
+      </form>
+
+
+
+
+
+
+
+
+
+
+
+    </div>

@@ -1,9 +1,75 @@
-<h1>Home Page</h1>
-<form action="/upload/profile" method="post" enctype="multipart/form-data">
-    <input type="file" name="profileImage" id="">
-    <button type="submit">submit</button>
-</form>
-<form action="/upload/item" method="post" enctype="multipart/form-data">
-    <input type="file" name="itemImage" id="">
-    <button type="submit">submit item</button>
-</form>
+<body>
+    <!-- main page and intro text -->
+    <section id="intro">
+        <div class="container-xxl">
+            <div class="row justify-content-center align-item-center">
+                <div class="col-md-5 text-center text-md-start">
+                    <h1>
+                        <div class="display-2">RnB platform</div>
+                        <div class="display-6 text-muted">Why buy when you can borrow? Join our community and save!
+                        </div>
+
+
+                    </h1>
+                    <p class="lead my-4 text-muted"> No item is left behind in RnB. Save money by renting through us or
+                        earn it by puting your items up for rent</p>
+
+                    <a href="/item/index" class="btn btn-primary btn-lg"> Rent Now</a>
+                </div>
+                <div class="col-md-5 text-center d-none d-md-block">
+                    <img class="img-fluid" src="https://i.ibb.co/Jjw2x4x/Rn-B-wallpaper.jpg" alt="wallpaper">
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Pricing plan -->
+    <section id="pricing" class="bg-light mt-5">
+        <div class="container-lg">
+            <div class="text-center">
+                <h2>Start today</h2>
+                <p class="lead">Sharing is caring, and our website makes it easy.<br>Rent your desired item , put an
+                    item
+                    for rent or just browse our top items now</p>
+            </div>
+            <div class="row my-5 align-items-center jusitfy-content-center g-0">
+                <div class="col-8 col-lg-4 col-xl-3">
+                    <div class="card border-0">
+                        <div class="card-body text-center py-4">
+                            <h4 class="card-title">put it for rent</h4>
+                            <p class="lead card-subtitle">Add items you wish to put up for rent</p>
+                            <img class="img-fluid" src="https://i.ibb.co/q9cfRGG/lawn-Mower.jpg" alt="listItem">
+                            <a href="/item/add" class="btn btn-outline-primary btn-lg mt-3">list Item</a>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9 col-lg-4 m-3">
+                    <div class="card border-primary border-2">
+                        <div class="card-header text-center text-primary">Best item</div>
+                        <div class="card-body text-center py-5">
+                            <h4 class="card-title">Rent now</h4>
+                            <p class="lead card-subtitle">Hot deal of the week</p>
+                            <img class="img-fluid" src="https://i.ibb.co/4V7VfRF/bbqGrill.jpg" alt="rental items">
+                            <a href="/item/index" class="btn btn-outline-primary btn-lg mt-3">Rent Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 col-lg-4 col-xl-3">
+                    <div class="card border-0">
+                        <div class="card-body text-center py-4">
+                            <h4 class="card-title">browse items</h4>
+                            <p class="lead card-subtitle">find your requsted items at best prices</p>
+                            <img class="img-fluid" src="https://i.ibb.co/Q9vQMb1/PC-setup.jpg" alt="wallpaper">
+                            <a href="/item/index" class="btn btn-outline-primary btn-lg mt-3">Rent Now</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</body>

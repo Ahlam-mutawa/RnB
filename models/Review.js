@@ -9,9 +9,10 @@ const reviewSchema = new mongoose.Schema({
     },
     creatorId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', required: true
+        ref: 'User'
     },
 }, { timetamps: true }
 )
+reviewSchema.set('toObject', { virtuals: true })
 
 module.exports = mongoose.model('Review', reviewSchema)

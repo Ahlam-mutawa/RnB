@@ -1,33 +1,93 @@
-<h2>Edit user</h2>
+<!-- edit profile pix layout -->
 
-<form method="POST" action="/user/edit">
-<div>
-    <label>User first Name</label>
-    <input name="firstName" type="text" value="<%= user.firstName %>"/>
-</div>
+ <div class="container py-5" >
 
-<div>
-    <label>User Last Name</label>
-    <input name="lastName" type="text" value="<%= user.lastName %>"/>
-</div>
+    <h2 class="edit">Edit Profile</h2>
+       <form action="/user/edit/img"  method="post" enctype="multipart/form-data">
+     
+        <img src="/images/profile/<%= user.profileImage %>" alt="profile picture" width="200" height="200" class="pic">
+     
+        
+     
+     <div class="row align-items-center justify-content-around row g-3">
+               
+         <div class="col-9">
+            
+            <input class="form-control" type="file" name="profileImage">
+            
+          </div>
+          <div class="col-3">
+            
+            <button type="submit" class="btn btn-outline-primary ms-1" >Update image</button>
+          </div>
+          
+     </div>
+     
+    </form>
+<!-- edit form layout -->
 
-<div>
-    <label>User Email Address</label>
-    <%= user.emailAddress %>"
-</div>
+    <div class="row g-3">
 
-<div>
-    <label>Telephone Number</label>
-    <input name="telNumber" type="text" value="<%= user.telNumber %>"/>
-</div>
+        <form class="row g-3 justify-content-around" method="POST" action="/user/edit" >
+            <div class="col-md-2">
+                <label>First Name</label>
+              <input name="firstName" type="text" class="form-control" value="<%= user.firstName %>">
+            </div>
+            <div class="col-md-2">
+                <label>Last Name</label>
+              <input name="lastName" type="text" class="form-control" value="<%= user.lastName %>">
+              </div>
+            <div class="col-md-2">
+                <label>Email Address</label>
+              <input name="emailAddred" type="email" class="form-control" value="<%= user.emailAddress %>" disabled >
+            </div>
+            <div class="col-md-2">
+                <label>Mobile Number</label>
+              <input name="telNumber" type="text" class="form-control" value="<%= user.telNumber %>">
+              </div>
+            <div class="col-md-2 d-flex align-items-end">
+
+                <input type="submit" class="btn btn-outline-primary ms-1" value="Update info">
+              </div>
+    
+            </form>
+                        
+     </div>
+     
+<!-- edit password change layout -->
+     <div class="row g-3" >
+        <form class="row g-3" action="/user/edit/password" method="post">
+            <div class="col-md-3">
+                <!-- <label for="oldPassword">Current password</label> -->
+                <input type="password" placeholder="Current Password"  name="password" id="" required> 
+            </div> 
+            <div class="col-md-3">
+                <!-- <label for="NewPassword">New password</label> -->
+            <input type="password" placeholder="New Password" name="newPassword1" id="" required>
+            </div> 
+            <div class="col-md-3">
+            <input type="password" placeholder="Confirm Password" name="newPassword2" id="" required>
+            </div> 
+            
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-outline-primary ms-1">Change password</button>
+            </div> 
+            
+        </form>
+      
+
+     </div>
+     
+     
+ </div>
+  
 
 
 
- 
+<!-- <form action="/upload/profile" method="post" enctype="multipart/form-data">
+    <input type="file" name="profileImage" id="">
 
- <input type="hidden" name="id" value="<%= user._id %>"/>
-
- <button type="submit">Edit Article</button>
-
-</form>
+    <input type="hidden" name="id" value="<%= user._id %>" />
+    <button type="submit">submit</button>
+</form> -->
 
